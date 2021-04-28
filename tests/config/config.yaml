@@ -1,0 +1,10 @@
+bootstrap-servers: localhost:9092
+message-topic: messages
+marker-topic: markers
+redelivery-timeout: 1000
+consumer-receive-buffer-capacity: 1
+consumer-next-message-timeout: 500
+consumer-max-messages-per-commit: 1000
+redelivery-tracker:
+  use-now-if-no-marker-seen: 500
+  num-offsets-per-commit: 1000

@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option go_package = "proto";
+
+// A named-pair of (partiton, offset) that is used to uniquely identify
+// a message from the queue topic
+message MessageID {
+  int32 partition = 1;
+  int64 offset = 2;
+}
+
+// A marker that can be used to determine when message redelivery is required
+message Marker {
+
+  enum Version {
+    V1 = 0;
+  }
+
+  enum Type {
+    START = 0;
+    END = 1;
+    KEEPALIVE = 2;
+  }
+
+  // The verison of the marker message
+  Version version = 1;
+
+  // The type of marker message
+  Type type = 2;
+
+  // The identity of the message that this marker tracks
+  MessageID message_id = 3;
+
+  // The number of milliseconds after seeing this marker which will trigger redelivery.
+  // Start and KeepAlive markers must have this value set.
+  // End markers will not have this value set.
+  uint64 redeliver_after_ms = 4;
+
+  // The payload of the original record.
+  // Start markers must contain non-null payload
+  // End and KeepAlive markers will contain null payload
+  bytes key = 5;
+  bytes value = 6;
+}
