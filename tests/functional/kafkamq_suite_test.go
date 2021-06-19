@@ -1,4 +1,4 @@
-package tests
+package functional
 
 import (
 	"context"
@@ -8,6 +8,7 @@ import (
 	"cd.splunkdev.com/dferstay/kafka-mq-go/queue"
 	"cd.splunkdev.com/dferstay/kafka-mq-go/queue/redelivery"
 	"cd.splunkdev.com/dferstay/kafka-mq-go/redelivery_tracker/cmd"
+	"cd.splunkdev.com/dferstay/kafka-mq-go/tests"
 
 	. "github.com/onsi/ginkgo"
 	"github.com/onsi/ginkgo/reporters"
@@ -16,7 +17,7 @@ import (
 
 var (
 	conf           queue.Config
-	provisioner    *Provisioner
+	provisioner    *tests.Provisioner
 	markerConsumer redelivery.MarkerConsumer
 	err            error
 	logger         *logging.Logger
@@ -36,12 +37,12 @@ var _ = BeforeSuite(func() {
 	// logger.SetLevel(logging.DebugLevel)
 	// logging.SetGlobalLogger(logger)
 
-	configFile := "./config/config.yaml"
+	configFile := "../config/config.yaml"
 
 	conf, err = queue.NewConfigFromFile(configFile)
 	Expect(err).ShouldNot(HaveOccurred())
 
-	provisioner, err = NewProvisioner(conf)
+	provisioner, err = tests.NewProvisioner(conf)
 	if err != nil {
 		logger.Fatal(err, "failed to initialize provisioner with error")
 	}

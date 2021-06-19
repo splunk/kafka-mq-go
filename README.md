@@ -164,6 +164,50 @@ The following are required for building and running tests.
 * [Mockery](https://github.com/vektra/mockery)
 * Docker (required for funtional tests)
 
+# Example Usage
+
+Create a queue.
+```
+import (
+    "time"
+    "cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka"
+	"cd.splunkdev.com/dferstay/kafka-mq-go/queue"
+)
+
+service, err := queue.NewService(kafka.NewClientFactory(), Config{
+	BootstrapServers: "broker:9092",
+	MessageTopic: "messages",
+	MarkerTopic: "markers",
+    RedeliveryTimeout: 10 * time.Second,
+    ConsumerReceiveBufferCapacity: 1,
+    ConsumerNextMessageTimeout: 1 * time.Second,
+    ConsumerMaxMessagesPerCommit: 1000,
+    RedeliveryTracker: RedeliveryTrackerConfig{
+        UseNowIfNoMarkerSeen: 10 * time.Second,
+        NumOffsetsPerCommit: 1000,
+    },
+})
+
+q := service.GetOrCreateQueue("test-queue")
+```
+
+Create a producer and send a message.
+```
+p := q.Producer()
+err := p.Send([]byte("hi"))
+```
+
+Create a consumer and receive a message.
+```
+c := q.Consumer()
+m, err := c.Receive(context.Background())
+if string(m.Payload()) == "hi" {
+    m.Ack() // ack the message to prevent redelivery
+}
+```
+
+For more detailed examples see [the set of functional tests](./tests/functional).
+
 # Tests
 
 ## Unit Tests

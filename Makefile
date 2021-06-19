@@ -60,7 +60,7 @@ build/linux/redelivery_tracker: proto
 
 
 functional-test: functional-test/services/start
-	@set -e; ginkgo -r -v ./tests/
+	@set -e; ginkgo -r -v ./tests/functional
 
 functional-test/services/start: test-network/create zk/start kafka/start
 
