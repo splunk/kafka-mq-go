@@ -6,11 +6,11 @@ Kafka allows for all messages up to a specific offset to be acknowledged whereas
 
 # Design
 
-Multiple logical message queues are built on top a pair of physical Kafka topics:
+Multiple logical message queues are built on top of a pair of physical Kafka topics:
 * The *queue topic* contains messages produced by `queue.Producer` instances.  Each message in the queue topic is keyed by the unique identifier of the queue that it belongs to.
     * Messages are consumed from the queue topic by `queue.Consumer` instances.  As consumers process messages they record their progress by sending marker messages to the *markers topic*
 * The *markers topic* contains a log that tracks message processing progress for all queues in the system.
-    * Marker messages are be consumed by a number of `RedeliveryTracker` replicas that determine when messages need to be redelivered to the queue topic.
+    * Marker messages are consumed by a number of `RedeliveryTracker` replicas that determine when messages need to be redelivered to the queue topic.
 
 ![alt text][design]
 
@@ -23,7 +23,7 @@ Message production performed by `queue.Producer` instances is denoted in step 0 
 * `key = queue_id`
 * `value = message_payload`
 
-Records are keyed with the unique identifier of the queue that they are associated with to allow for efficient filtering of messages by `queue.Consumer` instances.  In order to ensure that all messages are evenly distributed across queue topic partitions, the random Kafka partitioner used by the Kafka Producer instances contained in each `queue.Producer`.
+Records are keyed with the unique identifier of the queue that they are associated with to allow for efficient filtering of messages by `queue.Consumer` instances.  In order to ensure that all messages are evenly distributed across queue topic partitions, the `random` partitioner is used by the Kafka Producer instances contained in each `queue.Producer`.
 
 ## Consumer Operation
 
@@ -31,7 +31,7 @@ Message consumption and processing is performed in steps 1-5 in the diagram abov
 
 1. A batch of messages is consumed from the queue topic.
     * Messages are filtered to the queue that the `queue.Consumer` is processing messages from using the Kafka ConsumerRecord key.
-2. A *start marker* message for is produced on the markers topic to denote that message processing has started.
+2. A *start marker* message is produced on the markers topic to denote that message processing has started.
     * All marker messages will have the following properties:
         * `type : Enum(Start, End, KeepAlive)`
             * `Start` - signifies that processing of a message has started; begin tracking the message for redelivery.
@@ -40,8 +40,8 @@ Message consumption and processing is performed in steps 1-5 in the diagram abov
         * `partition : Int` - the ordinal of the partition in the source topic that contains the message.
         * `offset : Long` - the offset in the partition where the message is located.
         * `redeliver_after_ms: Long` - the number of milliseconds to wait between when this marker is seen by the `RedeliveryTracker` and when the associated message should be redelivered.  Only set for `Start` and `KeepAlive` markers.
-        * `key : bytes` - the key of the Kafka ConsumerRecord that contains the message.  Sent so that the message can be redelivered to the correct logical queue.
-        * `value : bytes` - the value of the Kafka ConsumerRecord that contains the message.  Sent so that the original message contents can be redelivered.  Only set for `Start` messages.
+        * `key : bytes` - the key of the Kafka ConsumerRecord in the source topic that contains the message.  Sent so that the message can be redelivered to the correct logical queue.
+        * `value : bytes` - the value of the Kafka ConsumerRecord in the source topic that contains the message.  Sent so that the original message contents can be redelivered.  Only set for `Start` messages.
     * In an effort to conserve storage:
         * `Start` markers will have all fields set.
         * `KeepAlive` markers will not have key and value fields set.
@@ -64,7 +64,7 @@ The `queue.Consumer` does not maintain local state; on restart after failure it 
 
 ## Redelivery Operation
 
-The `RedeliveryTracker` component ensures that messages whose processing were interrupted due to the crash of `queue.Consumer` are re-delivered to the queue topic; this allows for message processing to be retried.  The `RedeliveryTracker` consumes from the markers topic in order to determine which messages require redelivery.  A number of `RedeliveryTracker` replicas can be deployed to share consumption of the partitions in the markers topic in order to scale out the capacity for redelivery.
+The `RedeliveryTracker` component ensures that messages whose processing were interrupted due to the crash of a `queue.Consumer` are re-delivered to the queue topic; this allows for message processing to be retried.  The `RedeliveryTracker` consumes from the markers topic in order to determine which messages require redelivery.  A number of `RedeliveryTracker` replicas can be deployed to share consumption of the partitions in the markers topic in order to scale out the capacity for redelivery.
 
 When a `RedeliveryTracker` subscribes to the markers topic it is assigned a set of partitions.  For each partition, the RedeliveryTracker maintains the following in-memory data structures:
 
@@ -81,22 +81,22 @@ Message redelivery is performed in two parts: consumption of message markers and
         2. marker entry `(partition,offset,marker_offset)` is inserted into the `markersByOffset` queue.
         3. marker entry `(partition,offset,redelivery_deadline)` is inserted into the `markersByTimestamp` queue.
     * End
-        1. marker entry is removed into the `markersByOffset` queue.
-        2. marker entry is removed into the `markersByTimestamp` queue.
+        1. marker entry is removed from the `markersByOffset` queue.
+        2. marker entry is removed from the `markersByTimestamp` queue.
         3. mapping is removed from markers in `markersInProgress`.
     * KeepAlive
         1. marker entry's priority is adjusted in the `markersByTimestamp` queue according to updated redelivery_deadline.
-3. The RedeliveryTracker determines the smallest start marker offset of message that are in progress by querying the `markersByOffset` priority queue and commits this offset explicitly.
+3. The RedeliveryTracker determines the smallest start marker offset of messages that are in progress by querying the `markersByOffset` priority queue and committing this offset explicitly.
 
 Redelivery of expired messages is denoted with dotted arrows in the diagram above.
 
-1. The `RedeliveryTracker` consumer go-routine periodically checks its `markersByTimestamp` queues for messages whose execution deadline have expired.
+1. The `RedeliveryTracker` consumer go-routine periodically checks its `markersByTimestamp` queues for messages whose execution deadline has expired.
 2. For messages that have expired, the content of the `markersInProgress` map (message key, value) is used to redeliver the message payload to the queue topic.
 3. Once redelivery is complete, the marker entries for the task will be removed from both `markersByTimestamp` and `markersByOffset` queues, as well as the `markersInProgress` map.
 
 ### RedliveryTracker Failure & Restart
 
-The RedeliveryTracker needs to rebuild its data structures for tracking in-progress messages when recovering from a crash.  By committing the offset of the smallest start marker in the queue during marker topic consumption we guarantee that the RedeliveryTracker will rebuild the state of the priority queue from the log at the time it crashed.
+The RedeliveryTracker needs to rebuild the data structures for tracking in-progress messages when recovering from a crash.  By committing the offset of the smallest start marker in the queue during marker topic consumption we guarantee that the RedeliveryTracker will rebuild the state of the priority queues and `markersInProgress` map from the log at the time that the tracker crashed.
 
 ## Prior Art
 The design follows a similar approach to that employed by [kmq](https://github.com/softwaremill/kmq) with the following differences:
@@ -110,9 +110,9 @@ The design follows a similar approach to that employed by [kmq](https://github.c
     * In kmq, a pair of physical topics are required for each logical queue.
 3. Message redelivery does not require the RedeliveryTracker component to [seek()](https://kafka.apache.org/0100/javadoc/org/apache/kafka/clients/consumer/KafkaConsumer.html#seek(org.apache.kafka.common.TopicPartition,%20long)) in the queue topic to fetch the contents of messages that require redelivery.
     * This is important as messages for all logical queues flow through the same physical Kafka topic and the throughput requirements for each logical queue may be different.  It is possible for the original message contents of a low-volume logical queue to be deleted due to Kafka topic retention policies before redelivery is attempted.
-    * This also means that queue processing throughput is unaffected by message redelivery when it occurs.  Kafka relies on the system page cache (and message recency) for the performance characteristics that it has, and introducing a seek() has a negative effect on performance.
-    * In addition, this allows for the physical queue and markers topics to be configured with different numbers of partitions, retention policies, and other configuration, allowing for consumption of message and markers topics to be scaled independently as required.
-    * In kmq, the redelivery component performs a seek() to fetch the contents of the message that requires redelivery.  In order to reduce the negative impact on queue processsing throughput, kmq ensures that only forward seek()s are performed by requiring that the message & markers topics have equal number of partitions.  With this constraint, there will only ever be one redelivery component performing seek() operations on particular message topic at any time.
+    * This also means that queue processing throughput is unaffected by message redelivery when it occurs.  Kafka relies on the system page cache (and message recency) for the performance characteristics that it has, and introducing a `seek()` has a negative effect on performance.
+    * In addition, avoiding `seek()` calls allows for the physical queue and markers topics to be configured with different numbers of partitions, retention policies, and other configuration, allowing for consumption of message and markers topics to be scaled independently as required.
+    * In kmq, the redelivery component performs a `seek()` to fetch the contents of the message that requires redelivery.  In order to reduce the negative impact on queue processsing throughput, kmq ensures that only forward `seek()`s are performed by requiring that the message & markers topics have equal number of partitions.  With this constraint, there will only ever be one redelivery component performing `seek()` operations on particular message topic at any time, minimising the amount of disruptive churn in the page cache.
 4. Message redelivery deadlines are immune to clock skew between message consumers, Kafka brokers, and redelivery tracker instances.
     * Similar to kmq, the timestamps of markers are used as the logical deadline clock that determines whether redelivery is required.
     * Unlike kmq, in the absence of new markers the value of the local clock of the redelivery tracker is *not used as an absolute value*.  Instead, a local monotonic clock is used to determine the deadline clock value by taking the difference between the monotoic clock value at the time the last marker was received and the current monotonic clock value.
@@ -133,8 +133,8 @@ The following is a list of useful improvements that could be implemented.
     * Guages for the number of messages being processed and redelivered
     * Histograms to track message production and consumption latency.
     * The [Prometheus Go Client](https://github.com/prometheus/client_golang) is an excellent library for these purposes.
-3. Performance improvements
-    * The current implementation performs a few allocations on the heap per-message, which brings the Golang GC onto the hot code path.  Stack allocation should be used on hot paths and is preferred in other message processing clients written in Go.  See [this PR from the apache-pulsar-go client for an example](https://github.com/apache/pulsar-client-go/pull/319).
+3. Performance improvements.
+    * The current implementation performs a few allocations on the heap per-message which brings the Golang GC onto the hot code path.  Stack allocation should be used on hot paths and is preferred in other message processing clients written in Go.  See [this PR from the apache-pulsar-go client for an example](https://github.com/apache/pulsar-client-go/pull/319).
 4. Reduce scenarios where message processing may be duplicated.  Currently there are a few places where duplicates can be generated:
     1. `queue.Producer`: the Kafka Producer client sends a message with at-least-once semantics.
         * Producer sends message `M` and waits for delivery acknowledgement.
