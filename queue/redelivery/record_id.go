@@ -1,7 +1,7 @@
 package redelivery
 
 import (
-	kafkamq "cd.splunkdev.com/dferstay/kafka-mq-go/queue/proto"
+	kafkamq "github.com/splunk/kafka-mq-go/queue/proto"
 )
 
 // RecordID uniqely identifies a record in a kafka topic by using

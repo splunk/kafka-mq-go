@@ -1,4 +1,4 @@
-module cd.splunkdev.com/dferstay/kafka-mq-go
+module github.com/splunk/kafka-mq-go
 
 go 1.16
 

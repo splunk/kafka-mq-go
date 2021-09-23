@@ -4,10 +4,10 @@ import (
 	"errors"
 	"time"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka/mocks"
-	. "cd.splunkdev.com/dferstay/kafka-mq-go/pkg/testing/matchers"
-	kafkamq "cd.splunkdev.com/dferstay/kafka-mq-go/queue/proto"
-	. "cd.splunkdev.com/dferstay/kafka-mq-go/queue/redelivery"
+	"github.com/splunk/kafka-mq-go/pkg/kafka/mocks"
+	. "github.com/splunk/kafka-mq-go/pkg/testing/matchers"
+	kafkamq "github.com/splunk/kafka-mq-go/queue/proto"
+	. "github.com/splunk/kafka-mq-go/queue/redelivery"
 
 	confluentKafka "github.com/confluentinc/confluent-kafka-go/kafka"
 	. "github.com/onsi/ginkgo"

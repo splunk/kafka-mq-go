@@ -4,9 +4,9 @@ import (
 	"errors"
 	"time"
 
-	. "cd.splunkdev.com/dferstay/kafka-mq-go/pkg/testing/matchers"
-	. "cd.splunkdev.com/dferstay/kafka-mq-go/queue"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue/internal/mocks"
+	. "github.com/splunk/kafka-mq-go/pkg/testing/matchers"
+	. "github.com/splunk/kafka-mq-go/queue"
+	"github.com/splunk/kafka-mq-go/queue/internal/mocks"
 
 	confluentKafka "github.com/confluentinc/confluent-kafka-go/kafka"
 	. "github.com/onsi/ginkgo"

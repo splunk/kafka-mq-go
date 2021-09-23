@@ -4,11 +4,11 @@ import (
 	"context"
 	"testing"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/logging"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue/redelivery"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/redelivery_tracker/cmd"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/tests"
+	"github.com/splunk/kafka-mq-go/pkg/logging"
+	"github.com/splunk/kafka-mq-go/queue"
+	"github.com/splunk/kafka-mq-go/queue/redelivery"
+	"github.com/splunk/kafka-mq-go/redelivery_tracker/cmd"
+	"github.com/splunk/kafka-mq-go/tests"
 
 	. "github.com/onsi/ginkgo"
 	"github.com/onsi/ginkgo/reporters"

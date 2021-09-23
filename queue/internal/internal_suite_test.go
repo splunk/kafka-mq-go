@@ -3,7 +3,7 @@ package internal_test
 import (
 	"testing"
 
-	kafkaMocks "cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka/mocks"
+	kafkaMocks "github.com/splunk/kafka-mq-go/pkg/kafka/mocks"
 
 	confluentKafka "github.com/confluentinc/confluent-kafka-go/kafka"
 	. "github.com/onsi/ginkgo"

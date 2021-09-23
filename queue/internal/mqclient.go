@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/logging"
+	"github.com/splunk/kafka-mq-go/pkg/kafka"
+	"github.com/splunk/kafka-mq-go/pkg/logging"
 
 	confluentKafka "github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/pkg/errors"

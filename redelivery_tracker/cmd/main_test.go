@@ -3,10 +3,10 @@ package cmd
 import (
 	"os"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue/redelivery"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue/redelivery/mocks"
+	"github.com/splunk/kafka-mq-go/pkg/kafka"
+	"github.com/splunk/kafka-mq-go/queue"
+	"github.com/splunk/kafka-mq-go/queue/redelivery"
+	"github.com/splunk/kafka-mq-go/queue/redelivery/mocks"
 
 	. "github.com/onsi/ginkgo"
 )

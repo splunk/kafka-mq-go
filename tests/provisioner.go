@@ -3,7 +3,7 @@ package tests
 import (
 	"context"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue"
+	"github.com/splunk/kafka-mq-go/queue"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/pkg/errors"

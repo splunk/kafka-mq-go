@@ -8,8 +8,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue"
+	"github.com/splunk/kafka-mq-go/pkg/kafka"
+	"github.com/splunk/kafka-mq-go/queue"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

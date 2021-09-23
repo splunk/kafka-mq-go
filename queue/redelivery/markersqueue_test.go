@@ -3,8 +3,8 @@ package redelivery_test
 import (
 	"time"
 
-	kafkamq "cd.splunkdev.com/dferstay/kafka-mq-go/queue/proto"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue/redelivery"
+	kafkamq "github.com/splunk/kafka-mq-go/queue/proto"
+	"github.com/splunk/kafka-mq-go/queue/redelivery"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
