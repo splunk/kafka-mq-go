@@ -3,8 +3,8 @@ package queue_test
 import (
 	"time"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka/mocks"
-	. "cd.splunkdev.com/dferstay/kafka-mq-go/queue"
+	"github.com/splunk/kafka-mq-go/pkg/kafka/mocks"
+	. "github.com/splunk/kafka-mq-go/queue"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

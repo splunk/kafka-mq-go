@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	kafkaMocks "cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka/mocks"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue"
+	kafkaMocks "github.com/splunk/kafka-mq-go/pkg/kafka/mocks"
+	"github.com/splunk/kafka-mq-go/queue"
 
 	confluentKafka "github.com/confluentinc/confluent-kafka-go/kafka"
 	. "github.com/onsi/ginkgo"

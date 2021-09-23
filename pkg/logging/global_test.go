@@ -3,7 +3,7 @@ package logging_test
 import (
 	"bytes"
 
-	. "cd.splunkdev.com/dferstay/kafka-mq-go/pkg/logging"
+	. "github.com/splunk/kafka-mq-go/pkg/logging"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

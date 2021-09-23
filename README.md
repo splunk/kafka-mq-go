@@ -170,8 +170,8 @@ Create a queue.
 ```
 import (
     "time"
-    "cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue"
+    "github.com/splunk/kafka-mq-go/pkg/kafka"
+    "github.com/splunk/kafka-mq-go/queue"
 )
 
 service, err := queue.NewService(kafka.NewClientFactory(), Config{

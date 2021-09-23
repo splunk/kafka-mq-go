@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	proto "cd.splunkdev.com/dferstay/kafka-mq-go/queue/proto"
+	proto "github.com/splunk/kafka-mq-go/queue/proto"
 	mock "github.com/stretchr/testify/mock"
 
 	time "time"

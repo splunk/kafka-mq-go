@@ -6,10 +6,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/logging"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue/internal"
+	"github.com/splunk/kafka-mq-go/pkg/kafka"
+	"github.com/splunk/kafka-mq-go/pkg/logging"
+	"github.com/splunk/kafka-mq-go/queue"
+	"github.com/splunk/kafka-mq-go/queue/internal"
 
 	"github.com/cenkalti/backoff"
 	confluentKafka "github.com/confluentinc/confluent-kafka-go/kafka"

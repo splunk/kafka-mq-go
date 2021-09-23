@@ -3,10 +3,10 @@ package internal_test
 import (
 	"time"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka/mocks"
-	. "cd.splunkdev.com/dferstay/kafka-mq-go/pkg/testing/matchers"
-	. "cd.splunkdev.com/dferstay/kafka-mq-go/queue/internal"
-	kafkamq "cd.splunkdev.com/dferstay/kafka-mq-go/queue/proto"
+	"github.com/splunk/kafka-mq-go/pkg/kafka/mocks"
+	. "github.com/splunk/kafka-mq-go/pkg/testing/matchers"
+	. "github.com/splunk/kafka-mq-go/queue/internal"
+	kafkamq "github.com/splunk/kafka-mq-go/queue/proto"
 
 	confluentKafka "github.com/confluentinc/confluent-kafka-go/kafka"
 	. "github.com/onsi/ginkgo"

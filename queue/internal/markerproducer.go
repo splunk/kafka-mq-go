@@ -3,9 +3,9 @@ package internal
 import (
 	"time"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/logging"
-	kafkamq "cd.splunkdev.com/dferstay/kafka-mq-go/queue/proto"
+	"github.com/splunk/kafka-mq-go/pkg/kafka"
+	"github.com/splunk/kafka-mq-go/pkg/logging"
+	kafkamq "github.com/splunk/kafka-mq-go/queue/proto"
 
 	confluentKafka "github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/pkg/errors"

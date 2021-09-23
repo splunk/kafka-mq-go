@@ -4,9 +4,9 @@ import (
 	"context"
 	"sync"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/logging"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue/internal"
-	kafkamq "cd.splunkdev.com/dferstay/kafka-mq-go/queue/proto"
+	"github.com/splunk/kafka-mq-go/pkg/logging"
+	"github.com/splunk/kafka-mq-go/queue/internal"
+	kafkamq "github.com/splunk/kafka-mq-go/queue/proto"
 
 	"github.com/cenkalti/backoff"
 	confluentKafka "github.com/confluentinc/confluent-kafka-go/kafka"

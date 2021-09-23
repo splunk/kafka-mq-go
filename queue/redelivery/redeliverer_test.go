@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue/internal/mocks"
-	kafkamq "cd.splunkdev.com/dferstay/kafka-mq-go/queue/proto"
-	. "cd.splunkdev.com/dferstay/kafka-mq-go/queue/redelivery"
+	"github.com/splunk/kafka-mq-go/queue/internal/mocks"
+	kafkamq "github.com/splunk/kafka-mq-go/queue/proto"
+	. "github.com/splunk/kafka-mq-go/queue/redelivery"
 
 	"github.com/cenkalti/backoff"
 	confluentKafka "github.com/confluentinc/confluent-kafka-go/kafka"

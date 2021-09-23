@@ -3,8 +3,8 @@ package redelivery
 import (
 	"time"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/logging"
-	kafkamq "cd.splunkdev.com/dferstay/kafka-mq-go/queue/proto"
+	"github.com/splunk/kafka-mq-go/pkg/logging"
+	kafkamq "github.com/splunk/kafka-mq-go/queue/proto"
 
 	"github.com/pkg/errors"
 )

@@ -3,8 +3,8 @@ package queue
 import (
 	"context"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/logging"
-	"cd.splunkdev.com/dferstay/kafka-mq-go/queue/internal"
+	"github.com/splunk/kafka-mq-go/pkg/logging"
+	"github.com/splunk/kafka-mq-go/queue/internal"
 
 	"github.com/pkg/errors"
 )

@@ -3,7 +3,7 @@ package kafka
 import (
 	"time"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/logging"
+	"github.com/splunk/kafka-mq-go/pkg/logging"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )

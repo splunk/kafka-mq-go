@@ -5,7 +5,7 @@ package mocks
 import (
 	context "context"
 
-	queue "cd.splunkdev.com/dferstay/kafka-mq-go/queue"
+	queue "github.com/splunk/kafka-mq-go/queue"
 	mock "github.com/stretchr/testify/mock"
 )
 

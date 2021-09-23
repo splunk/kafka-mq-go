@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	redelivery "cd.splunkdev.com/dferstay/kafka-mq-go/queue/redelivery"
+	redelivery "github.com/splunk/kafka-mq-go/queue/redelivery"
 	mock "github.com/stretchr/testify/mock"
 )
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"io"
 
-	"cd.splunkdev.com/dferstay/kafka-mq-go/pkg/kafka"
+	"github.com/splunk/kafka-mq-go/pkg/kafka"
 )
 
 // Message represents a message received by a Queue Consumer
